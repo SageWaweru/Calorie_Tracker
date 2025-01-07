@@ -70,7 +70,7 @@ class Food(models.Model):
     
     class Meta:
         ordering = ['id']
-        
+
     def clean(self):
         if self.quantity < 0 or self.calories < 0 or self.fat < 0 or self.carbohydrates < 0 or self.protein < 0:
             raise ValidationError("Quantity, calories, and macronutrient values must be non-negative.")
