@@ -17,7 +17,7 @@ from django.db.models import Subquery, OuterRef
 
 
 def index(request):
-    return food_list_view(request)
+    return render (request, 'index.html')
 
 User = get_user_model()
 
