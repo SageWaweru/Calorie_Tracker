@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Food Tracker | Add Food Item{% endblock %}
+
+{% block body %}
+<div class='py-4 mt-auto'>
+    <div class='container px-4'>
+
+        {% if success %}
+<button type="button" class="btn btn-primary d-none" id="modalTrigger" data-bs-toggle="modal" data-bs-target="#successModal">
+    Open Modal
+</button>
+
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="successModalLabel">Success</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                The new food item was added successfully.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if success %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const modalTrigger = document.getElementById('modalTrigger');
+        modalTrigger.click();
+    });
+</script>
+{% endif %}
+        {% else %}
+            <div class='d-flex justify-content-center'>
+                <h3>Add Food Item</h3>
+            </div>
+        
+            <div class='d-flex justify-content-center'>
+                <p>Enter the details of a new food item</p>
+            </div>
+            
+                <div class='row'>
+                    <div class='col-lg-6 offset-lg-3'>
+                        <div class='card bg-light mb-3'>
+                            <div class='card-body'>
+    
+                                <div class='form-group'>
+                                    <form action="{% url 'food_add' %}" method='POST' enctype='multipart/form-data'>
+                                        {% csrf_token %}
+                                        <div class='form-group'>
+                                            {{ food_form.as_p }}
+                                            {{ image_form.management_form }}
+                                            
+                                            {{ image_form.0.as_p }}
+                                            
+                                            <button type='submit' class='btn btn-primary'>Save</button>
+                                            <a href="{% url 'index' %}" class='btn btn-outline-dark'>Cancel</a>
+                                        </div>
+                                    </form>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
