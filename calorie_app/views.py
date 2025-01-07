@@ -13,6 +13,7 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404
 from .models import User, Food, FoodCategory, FoodLog, Image, Weight
 from .form import FoodForm, ImageForm
+from django.db.models import Subquery, OuterRef
 
 
 def index(request):
@@ -200,9 +201,6 @@ def food_log_delete(request, food_id):
 
 @login_required
 def weight_log_view(request):
-    '''
-    It allows the user to record their weight
-    '''
     if request.method == 'POST':
 
         weight = request.POST['weight']
@@ -259,11 +257,13 @@ def category_details_view(request, category_name):
     if not request.user.is_authenticated:
         return HttpResponseRedirect(reverse('login'))
 
-    category = FoodCategory.objects.get(category_name=category_name)
-    foods = Food.objects.filter(category=category)
+    category = get_object_or_404(FoodCategory, category_name=category_name)
 
-    for food in foods:
-        food.image = food.get_images.first()
+    foods = Food.objects.filter(category=category).order_by('id')  # Replace 'id' with the appropriate field
+
+    foods = foods.prefetch_related('get_images').annotate(first_image=Subquery(
+        Image.objects.filter(food=OuterRef('pk')).values('image_url')[:1]
+    ))
 
     page = request.GET.get('page', 1)
     paginator = Paginator(foods, 4)
@@ -276,10 +276,10 @@ def category_details_view(request, category_name):
 
     return render(request, 'food_category.html', {
         'categories': FoodCategory.objects.all(),
-        'foods': foods,
+        'foods': pages.object_list,  # Use the paginated foods here
         'foods_count': foods.count(),
         'pages': pages,
-        'title': category.category_name
+        'title': category.category_name,
     })
 
 @login_required

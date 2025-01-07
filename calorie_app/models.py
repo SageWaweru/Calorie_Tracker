@@ -67,7 +67,10 @@ class Food(models.Model):
     carbohydrates = models.DecimalField(max_digits=7, decimal_places=2)
     protein = models.DecimalField(max_digits=7, decimal_places=2)
     category = models.ForeignKey(FoodCategory, on_delete=models.CASCADE, related_name='food_category')
-
+    
+    class Meta:
+        ordering = ['id']
+        
     def clean(self):
         if self.quantity < 0 or self.calories < 0 or self.fat < 0 or self.carbohydrates < 0 or self.protein < 0:
             raise ValidationError("Quantity, calories, and macronutrient values must be non-negative.")
