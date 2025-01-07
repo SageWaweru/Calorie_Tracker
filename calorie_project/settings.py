@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-v)+nuv^&@(*x+&e9%f!awp9)ja)1_5@3(!bbd^a+tomo+nn8-6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -76,17 +76,20 @@ WSGI_APPLICATION = 'calorie_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME':'caloriedata',
-        'USER':'trackinguser',
-        'PASSWORD':'calorietracker',
-        'HOST':'Localhost',
-        'PORT':'5432'
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME':'caloriedata',
+#         'USER':'trackinguser',
+#         'PASSWORD':'calorietracker',
+#         'HOST':'Localhost',
+#         'PORT':'5432'
+#     }
+# }
 
+DATABASES={
+    'default': dj_database_url.parse("postgresql://sagedb_89dx_user:ri4CUpnYfySR8gT8rlwWz609dQJ8TrbH@dpg-ctucob9u0jms73f5roj0-a.oregon-postgres.render.com/sagedb_89dx")
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
