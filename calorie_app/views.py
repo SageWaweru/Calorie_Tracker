@@ -259,7 +259,7 @@ def category_details_view(request, category_name):
 
     category = get_object_or_404(FoodCategory, category_name=category_name)
 
-    foods = Food.objects.filter(category=category).order_by('id')  # Replace 'id' with the appropriate field
+    foods = Food.objects.filter(category=category).order_by('id')  
 
     foods = foods.prefetch_related('get_images').annotate(first_image=Subquery(
         Image.objects.filter(food=OuterRef('pk')).values('image_url')[:1]
@@ -276,7 +276,7 @@ def category_details_view(request, category_name):
 
     return render(request, 'food_category.html', {
         'categories': FoodCategory.objects.all(),
-        'foods': pages.object_list,  # Use the paginated foods here
+        'foods': pages.object_list,  
         'foods_count': foods.count(),
         'pages': pages,
         'title': category.category_name,
