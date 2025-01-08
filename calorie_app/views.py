@@ -262,7 +262,7 @@ def category_details_view(request, category_name):
     foods = Food.objects.filter(category=category).order_by('id')  
 
     foods = foods.prefetch_related('get_images').annotate(first_image=Subquery(
-        Image.objects.filter(food=OuterRef('pk')).values('image_url')[:1]
+        Image.objects.filter(food=OuterRef('pk')).values('image')[:1]
     ))
 
     page = request.GET.get('page', 1)
