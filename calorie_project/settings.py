@@ -139,3 +139,18 @@ AUTH_USER_MODEL = "calorie_app.CustomUser"
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
+CREATE TABLE grades(
+   grade_id SERIAL PRIMARY KEY,
+   subject VARCHAR(50),
+   grade VARCHAR(20),
+   sudent_id INT,
+   FOREIGN KEY (student_id) REFERENCE students(student_id)
+);
+CREATE TABLE students(
+   student_id SERIAL PRIMARY KEY,
+   first_name VARCHAR(50),
+   email VARCHAR(50),
+   last_name VARCHAR(50)UNIQUE,
+   grade_level INT
+);
+INSERT INTO students (first_name, last_name, email, grade_level)VALUES ('Sage', 'Waweru', 'sagewaweru@gmail.com', 2), ('Mark', 'Maina', 'maina@gmail.com', 4),('Mary', 'Sky', 'mary@gmail.com', 2);
